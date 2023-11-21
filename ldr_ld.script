@@ -1,0 +1,68 @@
+
+MEMORY
+{
+	load_ram : ORIGIN = 0x30000000, LENGTH = 512K
+}
+
+OUTPUT_ARCH(arm)
+
+ENTRY(_init)
+
+SECTIONS
+{ 
+	.init.text : 
+	{ 
+		*(.init)
+	} > load_ram
+
+	.init.data :
+	{
+		*(.init.data)
+	} > load_ram
+	
+	.text :	{
+		*(.text)
+	} > load_ram
+	
+
+	__data_start__ = .;
+	
+	.data : 
+	{
+		*(.data) 
+	} > load_ram
+	
+	__data_end__ = .;
+
+
+	.rodata : 
+	{
+		*(.rodata) 
+	} > load_ram
+
+
+  
+
+  .bss  ALIGN(4) :
+  {
+	__bss_start = .;
+   *(.dynbss)
+   *(.bss .bss.* .gnu.linkonce.b.*)
+   *(COMMON) 
+   . = ALIGN(32 / 8);
+   __bss_end = .;
+  }  > load_ram
+  . = ALIGN(32 / 8);
+  
+  __HEAP_START = .;
+
+  .fill :
+  {
+    FILL(0xDEADBEEF);
+    . = ORIGIN(load_ram) + LENGTH(load_ram) - 1;
+    BYTE(0xAA)
+    ___ROM_AT = .;
+  } > load_ram
+
+
+}
