@@ -546,7 +546,7 @@ volatile void _boot(){
     uart0_printf("NFCONF:%08x\r\n", *NFCONF);
 
 
-    set_flash_lock_boundary(10,2040); //lock FLASH blk 0~10 and 2040~2047 in case.
+    set_flash_lock_boundary(10,2040); //lock FLASH blk 0~9 and 2041~2047 in case.
 
     *RTCCON = 0x11;
      
